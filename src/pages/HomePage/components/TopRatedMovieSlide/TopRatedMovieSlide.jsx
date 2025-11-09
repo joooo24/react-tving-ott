@@ -3,7 +3,7 @@ import { useTopRatedMoviesQuery } from "../../../../hooks/useTopRatedMovie";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Alert } from "react-bootstrap";
-import MovieCard from "../MovieCard/MovieCard";
+import MovieCard from "../../../../common/MovieCard/MovieCard";
 
 const TopRatedMovieSlide = () => {
     const { data, isLoading, isError, error } = useTopRatedMoviesQuery();
