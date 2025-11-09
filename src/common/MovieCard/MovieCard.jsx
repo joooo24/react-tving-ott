@@ -1,7 +1,23 @@
 import React from "react";
 import "./MovieCard.scss";
+import { useMoiveGenreQuery } from "../../hooks/useMovieGenre";
 
 const MovieCard = ({ movie }) => {
+    const { data: genreData } = useMoiveGenreQuery();
+    console.log("장르", genreData);
+
+    const showGenre = (genreIdList) => {
+        if (!genreIdList || !genreData) return [];
+
+        const genreNameList = genreIdList.map((id) => {
+            // genreData에서 id와 일치하는 장르 객체 찾기
+            const genreObj = genreData.find((genre) => genre.id === id);
+            // 찾은 장르 객체의 name 속성 반환 (없으면 undefined)
+            return genreObj?.name;
+        });
+        return genreNameList;
+    };
+
     return (
         <div
             className="movie-card"
@@ -12,7 +28,7 @@ const MovieCard = ({ movie }) => {
         >
             <div className="tag-wrap">
                 <span className={`tag ${movie.adult ? "adult" : "all"}`}>{movie.adult ? "19+" : "ALL"}</span>
-                {movie.genre_ids?.map((genre) => (
+                {showGenre(movie.genre_ids)?.map((genre) => (
                     <span key={genre} className="tag">
                         {genre}
                     </span>
@@ -29,4 +45,3 @@ const MovieCard = ({ movie }) => {
 };
 
 export default MovieCard;
-// w300_and_h450_multi_faces_filter
