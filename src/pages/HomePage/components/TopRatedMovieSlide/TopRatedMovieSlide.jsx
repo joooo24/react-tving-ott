@@ -1,5 +1,5 @@
 import React from "react";
-import { useTopRatedMoviesQuery } from "../../../../hooks/useTopRatedMovie"; 
+import { useTopRatedMoviesQuery } from "../../../../hooks/useTopRatedMovie";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Alert } from "react-bootstrap";
@@ -33,7 +33,7 @@ const TopRatedMovieSlide = () => {
     };
     return (
         <div>
-            <h3>TopRatedMovie</h3>
+            <h3 className="slide-title">TopRated Movie</h3>
             <Carousel
                 infinite={true}
                 centerMode={true}

@@ -33,7 +33,7 @@ const UpcomingMovieSlide = () => {
     };
     return (
         <div>
-            <h3>UpcomingMovieSlide</h3>
+            <h3 className="slide-title">Upcoming Movie</h3>
             <Carousel
                 infinite={true}
                 centerMode={true}
