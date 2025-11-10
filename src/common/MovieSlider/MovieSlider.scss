@@ -2,3 +2,9 @@
     font-size: 20px;
     margin: 2rem 0 1rem 16px;
 }
+
+.carousel-container {
+    .react-multi-carousel-track {
+        gap: 10px;
+    }
+}

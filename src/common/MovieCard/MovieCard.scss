@@ -11,6 +11,11 @@
     padding: 20px;
     overflow: hidden;
 
+    &:hover {
+        background-size: 110%;
+        background-position: center;
+    }
+
     // 배경 오버레이
     &::before {
         content: "";
