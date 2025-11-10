@@ -1,9 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./AppLayout.scss";
 import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
+    const [keyword, setKeyword] = useState("");
+    const navigate = useNavigate();
+    const searchByKeyword = (event) => {
+        event.preventDefault();
+        console.log(keyword);
+        navigate(`/movies?q=${keyword}`);
+        setKeyword("");
+    };
+
     return (
         <>
             <nav>
@@ -21,10 +30,17 @@ const AppLayout = () => {
                         <Link to="/drama">DRAMA</Link>
                     </div>
                 </div>
-                <div className="search-wrap">
-                    <input type="text" />
-                    <button>검색</button>
-                </div>
+                <form className="search-wrap" onSubmit={searchByKeyword}>
+                    <input
+                        type="text"
+                        value={keyword}
+                        placeholder="Search"
+                        onChange={(event) => {
+                            setKeyword(event.target.value);
+                        }}
+                    />
+                    <button type="submit">검색</button>
+                </form>
             </nav>
             <Outlet />
         </>
