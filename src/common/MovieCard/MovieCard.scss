@@ -93,3 +93,34 @@
         color: rgba(255, 255, 255, 0.8);
     }
 }
+
+@media screen and (max-width: 768px) {
+    .movie-card {
+        .title {
+            font-size: 14px;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .overview {
+            font-size: 12px;
+        }
+
+        .rating {
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .release-date {
+            font-size: 11px;
+        }
+
+        .tag-wrap {
+            gap: 2px;
+            .tag {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+        }
+    }
+}
