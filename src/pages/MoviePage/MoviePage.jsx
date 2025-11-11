@@ -88,7 +88,7 @@ const MoviePage = () => {
 
                 <Col lg={8} xs={12}>
                     <Row className="movie-list">
-                        {/* 필터링된 결과 */}
+                        {/* 필터링 결과 */}
                         {filteredMovies?.length > 0 ? (
                             filteredMovies.map((movie) => (
                                 <Col className="movie-item" key={movie.id} lg={4} xs={6}>
@@ -100,27 +100,30 @@ const MoviePage = () => {
                         )}
                     </Row>
 
-                    <ReactPaginate
-                        nextLabel=">"
-                        previousLabel="<"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={3}
-                        marginPagesDisplayed={2}
-                        pageCount={data?.total_pages}
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousClassName="page-item"
-                        previousLinkClassName="page-link"
-                        nextClassName="page-item"
-                        nextLinkClassName="page-link"
-                        breakLabel="..."
-                        breakClassName="page-item"
-                        breakLinkClassName="page-link"
-                        containerClassName="pagination"
-                        activeClassName="active"
-                        forcePage={page - 1}
-                        renderOnZeroPageCount={null}
-                    />
+                    {/* 페이지네이션 */}
+                    {filteredMovies?.length > 0 && (
+                        <ReactPaginate
+                            nextLabel=">"
+                            previousLabel="<"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={3}
+                            marginPagesDisplayed={2}
+                            pageCount={Math.ceil(filteredMovies.length / 20) || 1}
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            containerClassName="pagination"
+                            activeClassName="active"
+                            forcePage={page - 1}
+                            renderOnZeroPageCount={null}
+                        />
+                    )}
                 </Col>
             </Row>
         </Container>
