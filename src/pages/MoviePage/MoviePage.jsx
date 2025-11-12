@@ -9,6 +9,7 @@ import "./MoviePage.scss";
 const MoviePage = () => {
     const [query] = useSearchParams();
     const [page, setPage] = useState(1);
+    const itemsPerPage = 20; // 페이지당 아이템 수
     const [filters, setFilters] = useState({
         popularity: "",
         year: "",
@@ -16,20 +17,28 @@ const MoviePage = () => {
 
     const keyword = query.get("q");
 
+    // 키워드 변경 시 페이지 리셋
+    useEffect(() => {
+        setPage(1);
+    }, [keyword]);
+
+    // 필터 변경 시 페이지 리셋
+    useEffect(() => {
+        setPage(1);
+    }, [filters.year, filters.popularity]);
+
     const handlePageClick = ({ selected }) => {
         setPage(selected + 1);
     };
 
-    const { data, isLoading, isError, error } = useSearchMovieQuery({
-        keyword,
-        page,
-    });
+    // 500개(25페이지) 가져오기
+    const { data: allMovies, isLoading, isError, error } = useSearchMovieQuery({ keyword });
 
-    // 필터링
+    // 클라이언트 사이드 필터링
     const filteredMovies = useMemo(() => {
-        if (!data?.results) return [];
+        if (!allMovies || allMovies.length === 0) return [];
 
-        let movies = [...data.results];
+        let movies = [...allMovies];
 
         // 연도 필터링
         if (filters.year) {
@@ -47,10 +56,20 @@ const MoviePage = () => {
         }
 
         return movies;
-    }, [data?.results, filters.popularity, filters.year]);
+    }, [allMovies, filters.popularity, filters.year]);
 
-    if (isLoading) return <div>Loading...</div>;
-    if (isError) return <div>{error.message}</div>;
+    // 현재 페이지에 보여줄 데이터 (페이지네이션 적용)
+    const paginatedMovies = useMemo(() => {
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return filteredMovies.slice(startIndex, endIndex);
+    }, [filteredMovies, page, itemsPerPage]);
+
+    // 필터링된 결과의 총 페이지 수
+    const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
+
+    if (isLoading) return <div className="loading">Loading...</div>;
+    if (isError) return <div className="error">{error?.message || "에러가 발생했습니다"}</div>;
 
     return (
         <Container fluid>
@@ -83,14 +102,21 @@ const MoviePage = () => {
                                 max={new Date().getFullYear()}
                             />
                         </Form.Group>
+
+                        {/* 필터링된 결과 수 표시 */}
+                        {(filters.year || filters.popularity) && (
+                            <div className="filter-info">
+                                필터링된 결과: <span>{filteredMovies.length}</span>개
+                            </div>
+                        )}
                     </div>
                 </Col>
 
                 <Col lg={8} xs={12}>
                     <Row className="movie-list">
-                        {/* 필터링 결과 */}
-                        {filteredMovies?.length > 0 ? (
-                            filteredMovies.map((movie) => (
+                        {/* 페이지네이션된 필터링 결과 */}
+                        {paginatedMovies?.length > 0 ? (
+                            paginatedMovies.map((movie) => (
                                 <Col className="movie-item" key={movie.id} lg={4} xs={6}>
                                     <MovieCard movie={movie} />
                                 </Col>
@@ -100,15 +126,15 @@ const MoviePage = () => {
                         )}
                     </Row>
 
-                    {/* 페이지네이션 */}
-                    {filteredMovies?.length > 0 && (
+                    {/* 필터링된 결과 기준 페이지네이션 */}
+                    {filteredMovies?.length > 0 && totalPages > 1 && (
                         <ReactPaginate
                             nextLabel=">"
                             previousLabel="<"
                             onPageChange={handlePageClick}
-                            pageRangeDisplayed={3}
-                            marginPagesDisplayed={2}
-                            pageCount={Math.ceil(filteredMovies.length / 20) || 1}
+                            pageRangeDisplayed={5}
+                            marginPagesDisplayed={false}
+                            pageCount={totalPages}
                             pageClassName="page-item"
                             pageLinkClassName="page-link"
                             previousClassName="page-item"
