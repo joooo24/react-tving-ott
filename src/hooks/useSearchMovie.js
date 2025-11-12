@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import api from "../utils/api";
 
-const MAX_PAGES = 500; // 500페이지 (20개씩)
+const MAX_PAGES = 100; // 100페이지 (20개씩)
 
 const fetchSearchMovies = ({ keyword, page }) => {
     return keyword ? api.get(`/search/movie?query=${keyword}&page=${page}`) : api.get(`/movie/popular?page=${page}`);
