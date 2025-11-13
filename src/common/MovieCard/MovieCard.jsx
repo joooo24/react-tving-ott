@@ -1,10 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./MovieCard.scss";
 import { useMoiveGenreQuery } from "../../hooks/useMovieGenre";
 
 const MovieCard = ({ movie }) => {
+    const navigate = useNavigate();
     const { data: genreData } = useMoiveGenreQuery();
-    console.log("장르", genreData);
+
 
     const showGenre = (genreIdList) => {
         if (!genreIdList || !genreData) return [];
@@ -18,6 +20,10 @@ const MovieCard = ({ movie }) => {
         return genreNameList;
     };
 
+    const handleCardClick = () => {
+        navigate(`/movies/${movie.id}`);
+    };
+
     return (
         <div
             className="movie-card"
@@ -25,6 +31,7 @@ const MovieCard = ({ movie }) => {
                 backgroundImage:
                     "url(" + `https://media.themoviedb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}` + ")",
             }}
+            onClick={handleCardClick}
         >
             <div className="tag-wrap">
                 <span className={`tag ${movie.adult ? "adult" : "all"}`}>{movie.adult ? "19+" : "ALL"}</span>

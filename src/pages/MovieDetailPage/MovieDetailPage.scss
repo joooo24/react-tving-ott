@@ -1,0 +1,86 @@
+.movie-detail-page {
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #fff;
+
+    .movie-detail-content {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 30px;
+
+        .poster-section {
+            display: flex;
+            justify-content: center;
+
+            .movie-poster {
+                width: 100%;
+                max-width: 300px;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .info-section {
+            .movie-title {
+                font-size: 36px;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+
+            .movie-genres {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 25px;
+
+                .genre-tag {
+                    padding: 6px 16px;
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                }
+
+                .no-genre {
+                    color: rgba(255, 255, 255, 0.6);
+                }
+            }
+
+            .movie-info-item {
+                margin-bottom: 20px;
+
+                .info-label {
+                    display: block;
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+                .info-value {
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                .movie-overview {
+                    font-size: 16px;
+                    line-height: 1.7;
+                    color: rgba(255, 255, 255, 0.85);
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding: 24px 16px;
+
+        .movie-detail-content {
+            flex-direction: column;
+
+            .info-section {
+                .movie-title {
+                    font-size: 28px;
+                }
+            }
+        }
+    }
+}
