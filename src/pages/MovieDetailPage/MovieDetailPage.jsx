@@ -2,11 +2,15 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useMovieDetailQuery } from "../../hooks/useMovieDetail";
+import { useMovieRecommendationsQuery } from "../../hooks/useMovieRecommendations";
+import { responsive } from "../../constants/responsive";
+import MovieSlider from "../../common/MovieSlider/MovieSlider";
 import "./MovieDetailPage.scss";
 
 const MovieDetailPage = () => {
     const { id } = useParams();
     const { data: movie, isLoading, isError, error } = useMovieDetailQuery(id);
+    const { data: recommendations, isLoading: isRecommendationsLoading } = useMovieRecommendationsQuery(id);
 
     const formatBudget = (budget) => {
         if (!budget) return "정보 없음";
@@ -84,6 +88,15 @@ const MovieDetailPage = () => {
                     </div>
                 </Col>
             </Row>
+
+            {!isRecommendationsLoading && recommendations?.results?.length > 0 && (
+                <Row className="related-movies-section">
+                    <Col xs={12}>
+                        <MovieSlider movie={recommendations} slideTitle="Related Movies" />
+                    </Col>
+                </Row>
+            )}
+
         </Container>
     );
 };
