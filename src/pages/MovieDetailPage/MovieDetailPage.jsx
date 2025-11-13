@@ -83,6 +83,7 @@ const MovieDetailPage = () => {
                         <span className="info-value">{movie.release_date || "정보 없음"}</span>
                     </div>
                 </Col>
+            </Row>
         </Container>
     );
 };
