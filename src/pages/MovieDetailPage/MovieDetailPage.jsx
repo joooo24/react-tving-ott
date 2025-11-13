@@ -1,20 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useMovieDetailQuery } from "../../hooks/useMovieDetail";
 import { useMovieRecommendationsQuery } from "../../hooks/useMovieRecommendations";
-import { responsive } from "../../constants/responsive";
+import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
 import MovieSlider from "../../common/MovieSlider/MovieSlider";
+import ReviewCard from "./components/ReviewCard";
 import "./MovieDetailPage.scss";
 
 const MovieDetailPage = () => {
     const { id } = useParams();
     const { data: movie, isLoading, isError, error } = useMovieDetailQuery(id);
     const { data: recommendations, isLoading: isRecommendationsLoading } = useMovieRecommendationsQuery(id);
+    const { data: reviews, isLoading: isReviewsLoading } = useMovieReviewsQuery(id);
 
     const formatBudget = (budget) => {
         if (!budget) return "정보 없음";
         return budget.toLocaleString("ko-KR"); // 숫자를 한국어 형식(천 단위 구분)으로 변환
+    };
+
+    // 각 리뷰의 확장 상태
+    const [expandedReviews, setExpandedReviews] = useState({});
+
+    const toggleReview = (reviewId) => {
+        setExpandedReviews((prev) => ({
+            ...prev,
+            [reviewId]: !prev[reviewId],
+        }));
+    };
+
+    // 리뷰 텍스트를 자르는 함수 (예: 200자)
+    const truncateText = (text, maxLength = 200) => {
+        if (!text) return "";
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + "...";
     };
 
     if (isLoading) {
@@ -97,6 +116,32 @@ const MovieDetailPage = () => {
                 </Row>
             )}
 
+            <Row className="reviews-section">
+                <Col xs={12}>
+                    <h3 className="section-title">Reviews</h3>
+                    {!isReviewsLoading ? (
+                        reviews?.results?.length > 0 ? (
+                            <div className="reviews-list">
+                                {reviews.results.map((review) => (
+                                    <ReviewCard
+                                        key={review.id}
+                                        review={review}
+                                        isExpanded={expandedReviews[review.id]}
+                                        onToggle={toggleReview}
+                                        truncateText={truncateText}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="no-reviews">리뷰가 없습니다</div>
+                        )
+                    ) : null}
+                </Col>
+            </Row>
+
+            <Row>
+                <h3>Trailer</h3>
+            </Row>
         </Container>
     );
 };

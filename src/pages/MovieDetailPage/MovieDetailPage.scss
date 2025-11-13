@@ -70,6 +70,92 @@
         }
     }
 
+    .reviews-section {
+        margin-top: 60px;
+        margin-bottom: 40px;
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-card {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.3s ease;
+
+            &:hover {
+                border-color: rgba(255, 165, 0, 0.6);
+            }
+
+            .review-author {
+                font-size: 18px;
+                font-weight: 600;
+                color: #fff;
+                margin-bottom: 12px;
+            }
+
+            .review-content {
+                font-size: 16px;
+                line-height: 1.7;
+                color: rgba(255, 255, 255, 0.85);
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+
+            .review-toggle-btn {
+                margin-top: 16px;
+                background: none;
+                border: none;
+                color: #ffa500;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                padding: 0;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: #ff8c00;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            margin-top: 40px;
+
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .review-card {
+                padding: 20px;
+
+                .review-author {
+                    font-size: 16px;
+                }
+
+                .review-content {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
     @media (max-width: 768px) {
         padding: 24px 16px;
 
