@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useMovieDetailQuery } from "../../hooks/useMovieDetail";
 import { useMovieRecommendationsQuery } from "../../hooks/useMovieRecommendations";
 import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
 import MovieSlider from "../../common/MovieSlider/MovieSlider";
 import ReviewCard from "./components/ReviewCard";
 import Loading from "../../common/Loading/Loading";
-import Trailer from "./components/Trailer";
+import TrailerModal from "./components/TrailerModal";
 import "./MovieDetailPage.scss";
 
 const MovieDetailPage = () => {
@@ -16,9 +16,12 @@ const MovieDetailPage = () => {
     const { data: recommendations, isLoading: isRecommendationsLoading } = useMovieRecommendationsQuery(id);
     const { data: reviews, isLoading: isReviewsLoading } = useMovieReviewsQuery(id);
 
+    // Modal 상태 관리
+    const [showTrailerModal, setShowTrailerModal] = useState(false);
+
     const formatBudget = (budget) => {
         if (!budget) return "정보 없음";
-        return budget.toLocaleString("ko-KR"); // 숫자를 한국어 형식(천 단위 구분)으로 변환
+        return budget.toLocaleString("ko-KR");
     };
 
     // 각 리뷰의 확장 상태
@@ -107,6 +110,12 @@ const MovieDetailPage = () => {
                         <span className="info-label">개봉일</span>
                         <span className="info-value">{movie.release_date || "정보 없음"}</span>
                     </div>
+
+                    <div className="trailer-button-section">
+                        <Button variant="primary" className="btn-trailer" onClick={() => setShowTrailerModal(true)}>
+                            예고편 보기
+                        </Button>
+                    </div>
                 </Col>
             </Row>
 
@@ -141,12 +150,8 @@ const MovieDetailPage = () => {
                 </Col>
             </Row>
 
-            <Row className="trailer-section">
-                <Col xs={12}>
-                    <h3 className="section-title">Trailer</h3>
-                    <Trailer movieId={id} />
-                </Col>
-            </Row>
+            {/* Trailer Modal */}
+            <TrailerModal show={showTrailerModal} onHide={() => setShowTrailerModal(false)} movieId={id} />
         </Container>
     );
 };
