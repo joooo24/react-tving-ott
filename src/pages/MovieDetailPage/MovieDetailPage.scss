@@ -70,16 +70,23 @@
         }
     }
 
+    .section-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #fff;
+    }
+
+
+    .related-movies-section {
+        >div {
+            padding: 0;
+        }
+    }
+
     .reviews-section {
         margin-top: 60px;
         margin-bottom: 40px;
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #fff;
-        }
 
         .reviews-list {
             display: flex;
@@ -137,36 +144,42 @@
         @media (max-width: 768px) {
             margin-top: 40px;
 
-            .section-title {
-                font-size: 24px;
-                margin-bottom: 20px;
-            }
 
-            .review-card {
-                padding: 20px;
+        }
+    }
 
-                .review-author {
-                    font-size: 16px;
-                }
 
-                .review-content {
-                    font-size: 14px;
-                }
+}
+
+@media (max-width: 768px) {
+    .movie-detail-page {
+        padding: 24px 16px;
+    }
+
+    .movie-detail-content {
+        flex-direction: column;
+
+        .info-section {
+            .movie-title {
+                font-size: 28px;
             }
         }
     }
 
-    @media (max-width: 768px) {
-        padding: 24px 16px;
+    .section-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
 
-        .movie-detail-content {
-            flex-direction: column;
+    .review-card {
+        padding: 20px;
 
-            .info-section {
-                .movie-title {
-                    font-size: 28px;
-                }
-            }
+        .review-author {
+            font-size: 16px;
+        }
+
+        .review-content {
+            font-size: 14px;
         }
     }
 }

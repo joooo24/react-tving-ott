@@ -140,8 +140,11 @@ const MovieDetailPage = () => {
                 </Col>
             </Row>
 
-            <Row>
-                <h3>Trailer</h3>
+            <Row className="trailer-section">
+                <Col xs={12}>
+                    <h3 className="section-title">Trailer</h3>
+                    <div className="trailer-container"></div>
+                </Col>
             </Row>
         </Container>
     );
