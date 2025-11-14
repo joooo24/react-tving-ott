@@ -6,6 +6,7 @@ import { useMovieRecommendationsQuery } from "../../hooks/useMovieRecommendation
 import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
 import MovieSlider from "../../common/MovieSlider/MovieSlider";
 import ReviewCard from "./components/ReviewCard";
+import Loading from "../../common/Loading/Loading";
 import "./MovieDetailPage.scss";
 
 const MovieDetailPage = () => {
@@ -39,7 +40,7 @@ const MovieDetailPage = () => {
     if (isLoading) {
         return (
             <Container className="movie-detail-page">
-                <div className="loading">Loading...</div>
+                <Loading />
             </Container>
         );
     }

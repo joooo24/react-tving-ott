@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import { useSearchMovieQuery } from "../../hooks/useSearchMovie";
+import Loading from "../../common/Loading/Loading";
 import "./MoviePage.scss";
 
 const MoviePage = () => {
@@ -111,7 +112,7 @@ const MoviePage = () => {
 
                 <Col lg={8} xs={12}>
                     {isLoading ? (
-                        <div className="loading">Loading...</div>
+                        <Loading />
                     ) : isError ? (
                         <div className="error">{error?.message || "에러가 발생했습니다"}</div>
                     ) : (
