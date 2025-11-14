@@ -45,14 +45,25 @@
               color: #ddd;
               background-color: #2a2a2a;
               border-radius: 10px;
-              padding: 1rem;
+              padding: 1rem .6rem;
               display: flex;
               align-items: center;
               justify-content: center;
           }
 
-          button {
+          .search-btn {
               margin-left: 1rem;
+              cursor: pointer;
+              transition: all 0.3s ease;
+
+              &:hover {
+                  background-color: rgba(255, 255, 255, 0.1);
+              }
+
+              svg {
+                  width: 20px;
+                  height: 20px;
+              }
           }
       }
   }

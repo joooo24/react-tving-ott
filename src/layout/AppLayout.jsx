@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Search as SearchIcon } from "@mui/icons-material";
 import "./AppLayout.scss";
 import { Outlet } from "react-router-dom";
 
@@ -39,7 +40,9 @@ const AppLayout = () => {
                             setKeyword(event.target.value);
                         }}
                     />
-                    <button type="submit">검색</button>
+                    <button type="submit" className="search-btn">
+                        <SearchIcon />
+                    </button>
                 </form>
             </nav>
             <Outlet />
