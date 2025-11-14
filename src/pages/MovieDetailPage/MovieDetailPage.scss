@@ -148,7 +148,41 @@
         }
     }
 
+    .trailer-section {
+        margin-top: 60px;
+        margin-bottom: 40px;
 
+        .trailer-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .trailer-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; // 16:9 비율
+            height: 0;
+            overflow: hidden;
+
+            iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .no-trailer,
+        .trailer-error {
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+    }
 }
 
 @media (max-width: 768px) {
@@ -180,6 +214,14 @@
 
         .review-content {
             font-size: 14px;
+        }
+    }
+
+    .trailer-section {
+        margin-top: 40px;
+
+        .trailer-iframe-container {
+            padding-bottom: 56.25%;
         }
     }
 }

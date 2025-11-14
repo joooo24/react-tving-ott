@@ -7,6 +7,7 @@ import { useMovieReviewsQuery } from "../../hooks/useMovieReviews";
 import MovieSlider from "../../common/MovieSlider/MovieSlider";
 import ReviewCard from "./components/ReviewCard";
 import Loading from "../../common/Loading/Loading";
+import Trailer from "./components/Trailer";
 import "./MovieDetailPage.scss";
 
 const MovieDetailPage = () => {
@@ -143,7 +144,7 @@ const MovieDetailPage = () => {
             <Row className="trailer-section">
                 <Col xs={12}>
                     <h3 className="section-title">Trailer</h3>
-                    <div className="trailer-container"></div>
+                    <Trailer movieId={id} />
                 </Col>
             </Row>
         </Container>
