@@ -68,9 +68,6 @@ const MoviePage = () => {
     // 필터링된 결과의 총 페이지 수
     const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
 
-    if (isLoading) return <div className="loading">Loading...</div>;
-    if (isError) return <div className="error">{error?.message || "에러가 발생했습니다"}</div>;
-
     return (
         <Container fluid>
             <Row>
@@ -113,42 +110,50 @@ const MoviePage = () => {
                 </Col>
 
                 <Col lg={8} xs={12}>
-                    <Row className="movie-list">
-                        {/* 페이지네이션된 필터링 결과 */}
-                        {paginatedMovies?.length > 0 ? (
-                            paginatedMovies.map((movie) => (
-                                <Col className="movie-item" key={movie.id} lg={4} xs={6}>
-                                    <MovieCard movie={movie} />
-                                </Col>
-                            ))
-                        ) : (
-                            <div className="no-results">검색 결과가 없습니다</div>
-                        )}
-                    </Row>
+                    {isLoading ? (
+                        <div className="loading">Loading...</div>
+                    ) : isError ? (
+                        <div className="error">{error?.message || "에러가 발생했습니다"}</div>
+                    ) : (
+                        <>
+                            <Row className="movie-list">
+                                {/* 페이지네이션된 필터링 결과 */}
+                                {paginatedMovies?.length > 0 ? (
+                                    paginatedMovies.map((movie) => (
+                                        <Col className="movie-item" key={movie.id} lg={4} xs={6}>
+                                            <MovieCard movie={movie} />
+                                        </Col>
+                                    ))
+                                ) : (
+                                    <div className="no-results">검색 결과가 없습니다</div>
+                                )}
+                            </Row>
 
-                    {/* 필터링된 결과 기준 페이지네이션 */}
-                    {filteredMovies?.length > 0 && totalPages > 1 && (
-                        <ReactPaginate
-                            nextLabel=">"
-                            previousLabel="<"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={5}
-                            marginPagesDisplayed={false}
-                            pageCount={totalPages}
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakLabel="..."
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                            forcePage={page - 1}
-                            renderOnZeroPageCount={null}
-                        />
+                            {/* 필터링된 결과 기준 페이지네이션 */}
+                            {filteredMovies?.length > 0 && totalPages > 1 && (
+                                <ReactPaginate
+                                    nextLabel=">"
+                                    previousLabel="<"
+                                    onPageChange={handlePageClick}
+                                    pageRangeDisplayed={5}
+                                    marginPagesDisplayed={false}
+                                    pageCount={totalPages}
+                                    pageClassName="page-item"
+                                    pageLinkClassName="page-link"
+                                    previousClassName="page-item"
+                                    previousLinkClassName="page-link"
+                                    nextClassName="page-item"
+                                    nextLinkClassName="page-link"
+                                    breakLabel="..."
+                                    breakClassName="page-item"
+                                    breakLinkClassName="page-link"
+                                    containerClassName="pagination"
+                                    activeClassName="active"
+                                    forcePage={page - 1}
+                                    renderOnZeroPageCount={null}
+                                />
+                            )}
+                        </>
                     )}
                 </Col>
             </Row>
