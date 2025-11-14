@@ -2,7 +2,7 @@ import React from "react";
 import { useMovieTrailerQuery } from "../../../hooks/useMovieTrailer";
 import Loading from "../../../common/Loading/Loading";
 
-const Trailer = ({ movieId }) => {
+const TrailerIframe = ({ movieId }) => {
     const { data: trailerData, isLoading, isError } = useMovieTrailerQuery(movieId);
 
     if (isLoading) {
@@ -44,4 +44,4 @@ const Trailer = ({ movieId }) => {
     );
 };
 
-export default Trailer;
+export default TrailerIframe;
