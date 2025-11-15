@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import { useSearchMovieQuery } from "../../hooks/useSearchMovie";
-import { useMoiveGenreQuery } from "../../hooks/useMovieGenre"; // 추가
+import { useMoiveGenreQuery } from "../../hooks/useMovieGenre";
 import Loading from "../../common/Loading/Loading";
 import "./MoviePage.scss";
 
@@ -14,8 +14,8 @@ const MoviePage = () => {
     const { data: genreData } = useMoiveGenreQuery();
     const itemsPerPage = 20;
     const [filters, setFilters] = useState({
-        popularity: "",
-        year: "",
+        selectedPopularity: "",
+        selectedYear: "",
         selectedGenres: [],
     });
 
@@ -29,7 +29,7 @@ const MoviePage = () => {
     // 필터 변경 시 페이지 리셋
     useEffect(() => {
         setPage(1);
-    }, [filters.year, filters.popularity, filters.selectedGenres]);
+    }, [filters.selectedYear, filters.selectedPopularity, filters.selectedGenres]);
 
     const handlePageClick = ({ selected }) => {
         setPage(selected + 1);
@@ -57,10 +57,10 @@ const MoviePage = () => {
         let movies = [...allMovies];
 
         // 연도 필터링
-        if (filters.year) {
+        if (filters.selectedYear) {
             movies = movies.filter((movie) => {
                 const releaseYear = movie.release_date?.split("-")[0];
-                return releaseYear === filters.year;
+                return releaseYear === filters.selectedYear;
             });
         }
 
@@ -72,14 +72,14 @@ const MoviePage = () => {
         }
 
         // 인기순 정렬
-        if (filters.popularity === "high") {
+        if (filters.selectedPopularity === "high") {
             movies.sort((a, b) => b.popularity - a.popularity);
-        } else if (filters.popularity === "low") {
+        } else if (filters.selectedPopularity === "low") {
             movies.sort((a, b) => a.popularity - b.popularity);
         }
 
         return movies;
-    }, [allMovies, filters.popularity, filters.year, filters.selectedGenres]); // selectedGenres 추가
+    }, [allMovies, filters.selectedPopularity, filters.selectedYear, filters.selectedGenres]);
 
     // 현재 페이지에 보여줄 데이터 (페이지네이션 적용)
     const paginatedMovies = useMemo(() => {
@@ -103,8 +103,10 @@ const MoviePage = () => {
                             <Form.Label className="filter-label">인기순</Form.Label>
                             <Form.Select
                                 className="filter-select"
-                                value={filters.popularity}
-                                onChange={(e) => setFilters((prev) => ({ ...prev, popularity: e.target.value }))}
+                                value={filters.selectedPopularity}
+                                onChange={(e) =>
+                                    setFilters((prev) => ({ ...prev, selectedPopularity: e.target.value }))
+                                }
                             >
                                 <option value="">기본 (인기 높은 순)</option>
                                 <option value="high">인기 높은 순</option>
@@ -118,8 +120,8 @@ const MoviePage = () => {
                             <Form.Control
                                 type="number"
                                 placeholder="2025"
-                                value={filters.year}
-                                onChange={(e) => setFilters((prev) => ({ ...prev, year: e.target.value }))}
+                                value={filters.selectedYear}
+                                onChange={(e) => setFilters((prev) => ({ ...prev, selectedYear: e.target.value }))}
                                 min="1900"
                                 max={new Date().getFullYear()}
                             />
@@ -155,7 +157,7 @@ const MoviePage = () => {
                         </Form.Group>
 
                         {/* 필터링된 결과 수 */}
-                        {(filters.year || filters.popularity || filters.selectedGenres.length > 0) && (
+                        {(filters.selectedYear || filters.selectedPopularity || filters.selectedGenres.length > 0) && (
                             <div className="filter-info">
                                 필터링된 결과: <span>{filteredMovies.length}</span>개
                             </div>
