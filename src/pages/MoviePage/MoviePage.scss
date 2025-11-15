@@ -50,6 +50,69 @@
                 color: #fff;
             }
         }
+
+        // 장르 버튼 스타일
+        .genre-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .genre-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+
+            &.active {
+                background-color: #ffa500;
+                border-color: #ffa500;
+                color: #000;
+                font-weight: 600;
+            }
+        }
+
+        .clear-genres-btn {
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background-color: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+
+            &:hover {
+                color: #fff;
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+    }
+
+    // 필터링된 결과 정보
+    .filter-info {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+
+        span {
+            font-weight: 600;
+            color: #ffa500;
+        }
     }
 }
 

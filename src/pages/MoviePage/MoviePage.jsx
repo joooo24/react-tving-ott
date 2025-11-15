@@ -4,16 +4,19 @@ import { useSearchParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import { useSearchMovieQuery } from "../../hooks/useSearchMovie";
+import { useMoiveGenreQuery } from "../../hooks/useMovieGenre"; // 추가
 import Loading from "../../common/Loading/Loading";
 import "./MoviePage.scss";
 
 const MoviePage = () => {
     const [query] = useSearchParams();
     const [page, setPage] = useState(1);
-    const itemsPerPage = 20; // 페이지당 아이템 수
+    const { data: genreData } = useMoiveGenreQuery();
+    const itemsPerPage = 20;
     const [filters, setFilters] = useState({
         popularity: "",
         year: "",
+        selectedGenres: [],
     });
 
     const keyword = query.get("q");
@@ -26,16 +29,28 @@ const MoviePage = () => {
     // 필터 변경 시 페이지 리셋
     useEffect(() => {
         setPage(1);
-    }, [filters.year, filters.popularity]);
+    }, [filters.year, filters.popularity, filters.selectedGenres]);
 
     const handlePageClick = ({ selected }) => {
         setPage(selected + 1);
     };
 
-    // 500개(25페이지) 가져오기
     const { data: allMovies, isLoading, isError, error } = useSearchMovieQuery({ keyword });
 
-    // 클라이언트 사이드 필터링
+    // 장르 토글
+    const handleGenreToggle = (genreId) => {
+        setFilters((prev) => {
+            const isSelected = prev.selectedGenres.includes(genreId);
+            return {
+                ...prev,
+                selectedGenres: isSelected
+                    ? prev.selectedGenres.filter((id) => id !== genreId)
+                    : [...prev.selectedGenres, genreId],
+            };
+        });
+    };
+
+    // 클라이언트 필터링
     const filteredMovies = useMemo(() => {
         if (!allMovies || allMovies.length === 0) return [];
 
@@ -49,6 +64,13 @@ const MoviePage = () => {
             });
         }
 
+        // 장르 필터링(다중 선택 지원)
+        if (filters.selectedGenres.length > 0) {
+            movies = movies.filter((movie) => {
+                return movie.genre_ids?.some((id) => filters.selectedGenres.includes(id));
+            });
+        }
+
         // 인기순 정렬
         if (filters.popularity === "high") {
             movies.sort((a, b) => b.popularity - a.popularity);
@@ -57,7 +79,7 @@ const MoviePage = () => {
         }
 
         return movies;
-    }, [allMovies, filters.popularity, filters.year]);
+    }, [allMovies, filters.popularity, filters.year, filters.selectedGenres]); // selectedGenres 추가
 
     // 현재 페이지에 보여줄 데이터 (페이지네이션 적용)
     const paginatedMovies = useMemo(() => {
@@ -76,6 +98,7 @@ const MoviePage = () => {
                     <div className="filter-section">
                         <h4 className="filter-title">필터</h4>
 
+                        {/* 인기순 필터 */}
                         <Form.Group className="filter-group">
                             <Form.Label className="filter-label">인기순</Form.Label>
                             <Form.Select
@@ -89,6 +112,7 @@ const MoviePage = () => {
                             </Form.Select>
                         </Form.Group>
 
+                        {/* 연도 필터 */}
                         <Form.Group className="filter-group">
                             <Form.Label className="filter-label">연도</Form.Label>
                             <Form.Control
@@ -101,8 +125,37 @@ const MoviePage = () => {
                             />
                         </Form.Group>
 
-                        {/* 필터링된 결과 수 표시 */}
-                        {(filters.year || filters.popularity) && (
+                        {/* 장르 필터 */}
+                        <Form.Group className="filter-group">
+                            <Form.Label className="filter-label">장르</Form.Label>
+                            <div className="genre-buttons">
+                                {genreData?.map((genre) => {
+                                    const isSelected = filters.selectedGenres.includes(genre.id);
+                                    return (
+                                        <button
+                                            key={genre.id}
+                                            type="button"
+                                            className={`genre-btn ${isSelected ? "active" : ""}`}
+                                            onClick={() => handleGenreToggle(genre.id)}
+                                        >
+                                            {genre.name}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            {filters.selectedGenres.length > 0 && (
+                                <button
+                                    type="button"
+                                    className="clear-genres-btn"
+                                    onClick={() => setFilters((prev) => ({ ...prev, selectedGenres: [] }))}
+                                >
+                                    장르 선택 초기화
+                                </button>
+                            )}
+                        </Form.Group>
+
+                        {/* 필터링된 결과 수 */}
+                        {(filters.year || filters.popularity || filters.selectedGenres.length > 0) && (
                             <div className="filter-info">
                                 필터링된 결과: <span>{filteredMovies.length}</span>개
                             </div>
